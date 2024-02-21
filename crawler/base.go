@@ -4,10 +4,10 @@ import (
     "fmt"
     "io/ioutil"
     "net/http"
-    "os"
 
     "github.com/anaskhan96/soup"
 
+    "iTools/conf"
     "iTools/script"
 )
 
@@ -26,8 +26,7 @@ func GetDoc(url string) string {
     }
 
     // fb instagram
-    cookie := os.Getenv("cookie")
-    req.Header.Set("Cookie", cookie)
+    req.Header.Set("Cookie", conf.Cookie)
 
     res, err := http.DefaultClient.Do(req)
     if err != nil {
