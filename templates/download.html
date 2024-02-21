@@ -1,0 +1,38 @@
+{{- template "top" . }}
+ 
+                <h5>請輸入 FB / IG / threads / LinkedIn 網址</h5>
+                <form action="/download" method="post" enctype="multipart/form-data">
+                <div class="input-group mb-3">
+                    <input type="text" name="url" class="form-control" placeholder="輸入 ..." autocomplete="off">
+                    <div class="input-group-append">
+                        <input type="submit" class="input-group-text" value="傳送"></form>
+                    </div>
+                </div>
+                {{- if gt (len .linkDatas) 0 }}
+                    <table class="table table-striped">
+                        <tbody>
+                            {{ range .linkDatas }}
+                            <tr>
+                                <td>{{ .ID }}</td>
+                                <td>{{ .Type }}</td>
+                                <td><a href="{{ .Link }}" download="{{ .ID }}.mp4" target="_blank">網址</a></td>
+                            </tr>
+                            {{ end }}
+                        </tbody>
+                    </table>
+
+                <center>
+                    <textarea id="textarea" class="form-control">
+                    {{- range .linkDatas -}}
+                        {{- .Link }} &#10;
+                    {{- end -}}
+                    </textarea>
+                </center>
+                {{ end -}}
+
+<!-- \r &#13; \n  &#10; -->
+
+
+{{- template "bottom" . }}
+
+

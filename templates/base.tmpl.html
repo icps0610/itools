@@ -1,0 +1,189 @@
+{{- define "top" -}}
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <link rel="shortcut icon" href="/static/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
+    
+    <link rel="stylesheet" href="/static/bootstrap.css">
+
+    <script src="/static/bootstrap.js"></script>
+    
+    <title>iTools</title>
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-dark navbar-expand-sm">
+        <div class="container-sm">
+            <a class="navbar-brand" href="/">iTools</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarsExample04">
+                <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                    <li class="nav-item">
+                        <a class="nav-link{{ if eq .active `/download` }} active{{ end }}" href="/download">下載</a>
+                    </li>
+                    {{ if eq mode `pi`}}
+                    <li class="nav-item">
+                        <a class="nav-link{{ if eq .active `/share` }} active{{ end }}" href="/share">分享</a>
+                    </li>
+                    {{- end -}}
+                    <li class="nav-item">
+                        <a class="nav-link{{ if eq .active `/rem` }} active{{ end }}" href="/rem">記憶</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link{{ if eq .active `/url` }} active{{ end }}" aria-current="page" href="/url">網址</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link{{ if eq .active `/indent` }} active{{ end }}" href="/indent">縮排</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link{{ if eq .active `/carry` }} active{{ end }}" href="/carry">進位</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link{{ if eq .active `/base64` }} active{{ end }}" href="/base64">base64</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link{{ if eq .active `/urlCode` }} active{{ end }}" href="/urlCode">urlCode</a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-sm">
+        <div class="form-group row">
+            <div class="col-xl-2"></div>
+            <div class="col col-xl-8">
+                {{- if .msg }}
+                    <div id="flashMessage"></div>
+                {{- end }}
+                <br>
+{{- end -}}
+
+
+{{- define "bottom" -}}
+            </div>
+            <div class="col-xl-2"></div>
+        </div>
+
+<style>
+.row {
+    margin: 0 !important;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.textarea {
+    width: 100%; 
+    height: 100%;
+    max-width: 100%; 
+    min-height: 100px;
+}
+
+</style>
+
+{{- template "alert" . }}
+</html>
+
+{{- end -}}
+
+
+
+{{- define "alert" -}}
+<style>
+#flashMessage {
+    position: fixed; 
+    top: 58px; 
+    left: 50%; 
+    transform: translateX(-50%); 
+    background-color: {{.bgColor}};
+    color: #ffffff;
+    padding: 5px;
+    border-radius: 4px;
+    text-align: center;
+    font-weight: bold;
+    width: 300px;
+}
+</style>
+<script>
+var flashMessage = "{{- .msg -}}";
+
+if (flashMessage) {
+    var flashMessageElement = document.getElementById("flashMessage");
+    flashMessageElement.innerText = flashMessage;
+
+    setTimeout(function() {
+        flashMessageElement.style.display = "none";
+    }, 1500);
+}
+</script>
+{{- end -}}
+
+
+{{- define "scriptCopyText" -}}
+<script>
+function copyText() {
+    var textarea = document.getElementById("copyText");
+    textarea.select();
+    textarea.setSelectionRange(0, 99999); /*  mobile devices */
+    document.execCommand("copy");
+}
+</script>
+{{- end -}}
+
+
+{{- define "page" }}
+    {{- if gt .fileCount 0 }}
+            <br>
+            <center>{{- $currentPage := .currentPage }}
+            <div id="tabl2">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                    {{- if eq .peviousPage -1 -}}
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#"><<</a>
+                        </li>
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#"><</a>
+                        </li>
+                    {{- else -}}
+                        <li class="page-item">
+                            <a class="page-link" href="/share?page=1"><<</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="/share?page={{- .peviousPage -}}"><</a>
+                        </li>
+                    {{- end -}}
+                    {{- range .currentTables -}}
+                        {{- if eq . $currentPage -}}
+                        <li class="page-item active"><a class="page-link" href="#">{{- . -}}</a></li>
+                        {{- else -}}
+                        <li class="page-item"><a class="page-link" href="/share?page={{- . -}}">{{- . -}}</a></li>
+                        {{- end -}}
+                    {{- end -}}
+                    {{- if eq .nextPage -1 -}}
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#">></a>
+                        </li>
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#">>></a>
+                        </li>
+                    {{- else -}}
+                        <li class="page-item">
+                            <a class="page-link" href="/share?page={{- .nextPage -}}">></a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="/share?page={{- .lastPage -}}">>></a>
+                        </li>
+                    {{- end -}}
+                    </ul>
+                </nav>
+            </div>
+            </center>
+    {{- end }}
+{{- end }}

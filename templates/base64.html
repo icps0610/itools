@@ -1,0 +1,20 @@
+{{- template "top" . }}
+            <h3>base64</h3>
+
+            <h5>encode</h5>
+            <form action="/enBase64" method="post" enctype="multipart/form-data">
+                <textarea id="textarea" name="text" rows="3" class="form-control">{{ .enBase64 }}</textarea>
+                <div style="text-align: right;">
+                    <input type="submit" value="傳送" class="form-control mb-3">
+                </div>
+            </form>
+            
+            <h5>decode</h5>
+            <form action="/deBase64" method="post" enctype="multipart/form-data">
+                <textarea id="textarea" name="text" rows="3" class="form-control">{{ .deBase64 }}</textarea>
+                <div style="text-align: right;">
+                    <input type="submit" value="傳送" class="form-control">
+                </div>
+            </form>
+
+{{- template "bottom" . }}

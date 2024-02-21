@@ -1,0 +1,37 @@
+{{- template "top" . }}
+
+        <div id="upload">
+            <h3>請選擇檔案</h3>
+            <div class="input-group mb-3 flex-nowrap">
+                <div class="custom-file">
+                    <form action="/share" method="post" enctype="multipart/form-data">
+                        <input type="file" name="uploads" class="form-control" id="inputGroupFile02" multiple>
+                </div>
+                <div class="input-group-append">
+                    <input type="submit" class="input-group-text" id="inputGroupFileAddon02" value="Upload"></form>
+                </div>
+                <div class="input-group-append">
+                    <form action="/shareClean" method="post" enctype="multipart/form-data">
+                        <input type="submit" class="input-group-text" id="inputGroupFileAddon02" value="Clean">
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div id="table">
+        {{- if .files -}}
+            <table class="table table-bordered table-hover">
+                <tbody>
+                    {{- range .files -}}
+                    <tr>
+                        <td><a href='/share/{{ .Base64 }}' download="/share/{{ .Name }}">{{ .Name }}</a></td>
+                        <td class="img"><img src='/img/{{ .Name }}' height="35"></td>
+                    </tr>
+                    {{- end -}}
+                </tbody>
+            </table>
+            {{- end -}}
+        </div>
+        {{- template "page" . -}}
+
+{{- template "bottom" . }}
+

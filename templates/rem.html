@@ -1,0 +1,99 @@
+{{- template "top" . }}
+            <h3>記憶</h3>
+
+            <form  id="myForm" action="/rem" method="post" enctype="multipart/form-data">
+                <textarea id="copyText" name="text" rows="5" class="form-control" >{{ .text }}</textarea>
+
+                <input type="submit" value="貼上複製內容並傳送" class="form-control mb-5">
+            </form>
+
+            <button id="copyLastLine" class="form-control mb-3">複製最後一行</button>
+
+            <button onclick="copyText()" class="form-control mb-5">複製全部</button>
+
+            <form action="/remRmLast" method="post" enctype="multipart/form-data">
+                <input type="submit" value="清除最後一行" class="form-control mb-3">
+            </form>
+
+            <form action="/remClear" method="post" enctype="multipart/form-data">
+                <input type="submit" value="清除" class="form-control">
+            </form>
+
+<script>
+// 複製並傳送
+document.getElementById('myForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // 防止表單默認提交行為
+    
+  // 從剪貼簿讀取內容
+    if (navigator.clipboard) {
+        navigator.clipboard.readText().then(function(clipboardText) {
+            // 獲取 textarea 中的內容
+            var textareaContent = document.getElementById('copyText').value;
+            
+            // 如果剪貼簿有內容，則將其附加到 textarea 中的內容後面
+            if (clipboardText) {
+                textareaContent += "\r\n";
+                textareaContent += clipboardText;
+                // 更新 textarea 中的內容
+                document.getElementById('copyText').value = textareaContent;
+            }
+            document.getElementById('myForm').submit();
+        }).catch(function(err) {
+            console.error('無法讀取剪貼簿內容：', err);
+            document.getElementById('myForm').submit(); // 在出錯時也提交表單
+        });
+    } else {
+        // 如果 navigator.clipboard 是空值，直接提交表單
+        document.getElementById('myForm').submit();
+    }
+
+});
+
+// 複製最後一行
+document.getElementById("copyLastLine").addEventListener("click", function() {
+    // 獲取 textarea 元素
+    var textarea = document.getElementById("copyText");
+
+    // 獲取 textarea 中的內容
+    var text = textarea.value;
+
+    // 將內容分成行數
+    var lines = text.split("\n");
+
+    // 遍歷找到非空白的行
+    var lastNonEmptyLine = "";
+    for (var i = lines.length - 1; i >= 0; i--) {
+        var line = lines[i].trim(); // 去除首尾空白
+        if (line !== "") {
+            lastNonEmptyLine = line;
+            break;
+        }
+    }
+
+    // 如果找不到非空白行，則最後一行為空白，將再往前一行
+    if (lastNonEmptyLine === "") {
+        lastNonEmptyLine = lines[lines.length - 2];
+    }
+
+    // 創建一個新的 textarea 元素，並將最後一行的內容設置為其值
+    var tempTextarea = document.createElement("textarea");
+    tempTextarea.value = lastNonEmptyLine;
+
+    // 將新的 textarea 添加到文檔中
+    document.body.appendChild(tempTextarea);
+
+    // 選擇新的 textarea 中的內容
+    tempTextarea.select();
+
+    // 嘗試將其複製到剪貼板
+    document.execCommand("copy");
+
+    // 刪除新的 textarea 元素
+    document.body.removeChild(tempTextarea);
+});
+
+</script>
+
+{{- template "scriptCopyText" . }}
+
+{{- template "bottom" . }}

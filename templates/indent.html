@@ -1,0 +1,22 @@
+{{- template "top" . }}
+            <h3>縮排</h3>
+            <form action="/indent" method="post" enctype="multipart/form-data">
+                <textarea id="textarea" name="indent" rows="3" class="form-control"></textarea>
+                <div style="text-align: right;">
+                    <input type="submit" value="傳送" class="form-control mb-3">
+                </div>
+            </form>
+            {{- if ne .indent "" }}
+                <center>
+                    <textarea id="copyText" rows="3" class="form-control">
+                    {{- .indent -}}
+                    </textarea>
+                </center>
+                <div style="text-align: right;">
+                    <button onclick="copyText()" class="form-control">複製</button>
+                </div>
+            {{ end -}}
+
+{{- template "scriptCopyText" . }}
+
+{{- template "bottom" . }}

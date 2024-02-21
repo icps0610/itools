@@ -1,0 +1,25 @@
+{{- template "top" . }}
+
+            <h3>請輸入網址</h3>
+            <form action="/url" method="post" enctype="multipart/form-data">
+            <div class="input-group mb-3">
+                <input type="text" name="url" class="form-control" placeholder="輸入 ..." autocomplete="off">
+                <div class="input-group-append">
+                    <input type="submit" class="input-group-text" value="傳送"></form>
+                </div>
+            </div>
+            {{- if ne .link "" }}
+                <center>
+                    <textarea id="copyText" rows="3" class="form-control">
+                    {{- .link -}}
+                    </textarea>
+                </center>
+                <div style="text-align: right;">
+                    <button onclick="copyText()" class="form-control">複製</button>
+                </div>
+            {{ end -}}
+
+
+{{- template "scriptCopyText" . }}
+
+{{- template "bottom" . }}

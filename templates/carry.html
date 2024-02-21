@@ -1,0 +1,20 @@
+{{- template "top" . }}
+
+            <h3>數字和進位(2-62)</h3>
+            <form action="/carry" method="post" enctype="multipart/form-data">
+            <div class="input-group mb-3">
+                <input type="text" name="num1" class="form-control" placeholder="數字1 ..." autocomplete="off" value="{{ .num1 }}">
+                <input type="text" name="carry1" class="form-control" placeholder="進位1 ..." autocomplete="off" value="{{ .carry1 }}">
+                <input type="text" name="carry2" class="form-control" placeholder="進位2 ..." autocomplete="off" value="{{ .carry2 }}">
+                <div class="input-group-append">
+                    <input type="submit" class="input-group-text" value="傳送"></form>
+                </div>
+            </div>
+
+            <div class="input-group mb-3">
+                <input type="text" name="num2" class="form-control" placeholder="數字2 ..." autocomplete="off" value="{{ .num2 }}">
+
+            </div>
+
+{{- template "bottom" . }}
+
