@@ -47,11 +47,9 @@ func DownloadPost(c *gin.Context) {
 
     } else if script.IsWebSite(url, `facebook`) {
 
-        // reel
-        id := script.Scan(url, `https:\/\/www.facebook.com\/reel\/(\d+)`, 1)
-        if id != "" {
-            url = fmt.Sprintf(`https://www.facebook.com/watch?v=%s`, id)
-        }
+        id := script.GetFBVideoID(url)
+        url = fmt.Sprintf(`https://www.facebook.com/watch?v=%s`, id)
+        fmt.Println(url)
 
         // 先替換網址
         url = script.ReplaceWWW(url)
@@ -62,6 +60,7 @@ func DownloadPost(c *gin.Context) {
         lks := script.GetFBLink(doc)
 
         links = append(links, lks...)
+
     }
 
     if len(links) == 0 {

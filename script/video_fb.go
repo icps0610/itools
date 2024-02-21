@@ -19,6 +19,7 @@ func GetFacebookID(url string) string {
 }
 
 func GetFBLink(doc soup.Root) []string {
+
     var links []string
     for _, meta := range doc.FindAll("a") {
         // link := meta.Attrs()[`content`]
@@ -41,5 +42,31 @@ func GetFBLink(doc soup.Root) []string {
 func ReplaceWWW(url string) string {
     return strings.Replace(url, `www`, `mbasic`, 1)
 }
+
+func GetFBVideoID(url string) string {
+    keywords := []string{
+        `https:\/\/www.facebook.com\/watch\?v\=(\d+)`,
+        `https:\/\/www.facebook.com\/reel\/(\d+)`,
+        `https:\/\/www.facebook.com\/\w+\/videos\/(\d+)`,
+    }
+
+    for _, keyword := range keywords {
+        id := Scan(url, keyword, 1)
+
+        if id != "" {
+            return id
+        }
+    }
+
+    return url
+}
+
+// 私人影片
+// if script.Match(url, `video`) {
+//     text := crawler.GetDoc(url)
+//     text = script.FixURL(text)
+
+//     link := script.Scan(text, `_sd_url":"(https:\/\/.*)","browse`, 1)
+//     links = append(links, link)
 
 var _ = fmt.Println

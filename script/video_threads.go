@@ -18,8 +18,7 @@ func GetThreadsID(url string) string {
 
 func GetThreadsLink(texts string) []string {
     // 修正 /
-    texts = strings.Replace(texts, `\/`, `/`, -1)
-    texts = strings.Replace(texts, `\u0025`, `%`, -1)
+    texts = FixURL(texts)
 
     var splitText string
     // threads
