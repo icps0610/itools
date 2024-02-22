@@ -38,3 +38,9 @@ func ScanGroups(str, keyword string) []string {
 
     return re.FindStringSubmatch(str)
 }
+
+func MatchAll(str, keyword string, is ...int) []string {
+    re := regexp.MustCompile(keyword)
+
+    return re.FindAllString(str, -1)
+}

@@ -67,10 +67,26 @@ func To_i(s string) int {
     return i
 }
 
-func DeUnicode(str string) string {
-    str = fmt.Sprintf(`"%s"`, str)
-    deStr, err := strconv.Unquote(str)
-    printError(err)
+func DeUnicode(text string) string {
+    for _, match := range MatchAll(text, `\\u\w{4}`) {
+        replacement := deUnidcode(match)
+        text = strings.Replace(text, match, replacement, 1)
+    }
+
+    for _, match := range MatchAll(text, `\\u\w{4}\\u\w{4}`) {
+        replacement := GetEmoji(match)
+
+        text = strings.Replace(text, match, replacement, 1)
+    }
+
+    return text
+}
+
+func deUnidcode(str string) string {
+    deStr, err := strconv.Unquote(fmt.Sprintf(`"%s"`, str))
+    if err != nil {
+        return str
+    }
     return deStr
 }
 

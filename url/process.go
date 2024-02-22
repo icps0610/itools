@@ -2,6 +2,7 @@ package url
 
 import (
     "fmt"
+    "strings"
 
     "iTools/crawler"
     "iTools/script"
@@ -34,8 +35,13 @@ func processMobile(url string) string {
 }
 
 func processFB(url string) string {
-    url = crawler.GetRedirectURL(url)
-    url = crawler.GetRedirectURL(url)
+    // 獲得轉址
+    // https://fb.watch/\w+/ => https://www.facebook.com/watch/?v=\d+&ref=sharing
+    if script.Match(url, `fb\.watch`) {
+        url = crawler.GetRedirectURL(url)
+    }
+
+    url = strings.Replace(url, `watch/?v=`, `watch?v=`, -1)
 
     url = script.GetFBVideoURL(url)
 
