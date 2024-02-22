@@ -17,7 +17,11 @@ func IsYoutube(url string) bool {
 }
 
 func IsFacebook(url string) bool {
-    return Match(url, `facebook`)
+    return Match(url, `facebook`) || Match(url, `fb`)
+}
+
+func IsFacebookVideo(url string) bool {
+    return IsFacebook(url) && (Match(url, `\/watch\?v`) || Match(url, `\/reel\/`) || Match(url, `fb\.watch`))
 }
 
 func isJPG(link string) bool {

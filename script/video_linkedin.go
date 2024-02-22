@@ -19,9 +19,7 @@ func GetLinkedInLink(doc soup.Root) string {
 
     if len(sc) > 0 {
         scriptTexts := sc[1].Text()
-        scriptTexts = strings.Replace(scriptTexts, `%22`, `"`, -1)
-        scriptTexts = strings.Replace(scriptTexts, `%7d`, `}`, -1)
-        scriptTexts = strings.Replace(scriptTexts, `%7b`, `{`, -1)
+        scriptTexts = DeURLCode(scriptTexts)
 
         for _, scriptText := range strings.Split(scriptTexts, `,`) {
             keyword := `(https:\/\/dms.licdn.com\/playlist\/vid\/.*)"`

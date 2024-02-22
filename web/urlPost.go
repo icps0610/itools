@@ -12,7 +12,7 @@ import (
 
 func UrlPost(c *gin.Context) {
     urlstr := c.PostForm("url")
-    urlstr = script.DeUrlCode(urlstr)
+    urlstr = script.DeURLCode(urlstr)
 
     // 只擷取網址部分
     urlstr = script.GrapURL(urlstr)

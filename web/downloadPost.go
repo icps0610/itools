@@ -45,11 +45,12 @@ func DownloadPost(c *gin.Context) {
 
         links = append(links, lks...)
 
-    } else if script.IsWebSite(url, `facebook`) {
+    } else if script.IsWebSite(url, `facebook`) || script.IsWebSite(url, `fb`) {
 
-        id := script.GetFBVideoID(url)
-        url = fmt.Sprintf(`https://www.facebook.com/watch?v=%s`, id)
-        fmt.Println(url)
+        url := crawler.GetRedirectURL(url)
+        url = crawler.GetRedirectURL(url)
+
+        url = script.GetFBVideoURL(url)
 
         // 先替換網址
         url = script.ReplaceWWW(url)

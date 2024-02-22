@@ -19,12 +19,11 @@ func GetFacebookID(url string) string {
 }
 
 func GetFBLink(doc soup.Root) []string {
-
     var links []string
     for _, meta := range doc.FindAll("a") {
         // link := meta.Attrs()[`content`]
         link := meta.Attrs()[`href`]
-        link = DeUrlCode(link)
+        link = DeURLCode(link)
 
         if Match(link, `fbcdn`) {
             if link != "" && notInclude(links, link) {
@@ -36,6 +35,22 @@ func GetFBLink(doc soup.Root) []string {
         }
     }
 
+    // 因為
+    // 檢查轉址 https://fb.watch/\w+/ => https://www.facebook.com/watch?v=\d+
+    // 所以作廢
+
+    // for _, meta := range doc.FindAll("script") {
+
+    //     text := meta.Text()
+    //     text = FixURL(text)
+    //     link := Scan(text, `_sd_url":"(https:\/\/.*)","browse`, 1)
+
+    //     if link != "" {
+    //         links = append(links, link)
+    //         break
+    //     }
+    // }
+
     return links
 }
 
@@ -43,30 +58,22 @@ func ReplaceWWW(url string) string {
     return strings.Replace(url, `www`, `mbasic`, 1)
 }
 
-func GetFBVideoID(url string) string {
+func GetFBVideoURL(url string) string {
     keywords := []string{
-        `https:\/\/www.facebook.com\/watch\?v\=(\d+)`,
-        `https:\/\/www.facebook.com\/reel\/(\d+)`,
-        `https:\/\/www.facebook.com\/\w+\/videos\/(\d+)`,
+        `watch\/?.*v=(\d+)`,
+        `reel\/(\d+)`,
+        `.*\/videos\/(\d+)`,
     }
 
     for _, keyword := range keywords {
+        keyword = `www.facebook.com\/` + keyword
+
         id := Scan(url, keyword, 1)
 
         if id != "" {
-            return id
+            return fmt.Sprintf(`https://www.facebook.com/watch?v=%s`, id)
         }
     }
 
     return url
 }
-
-// 私人影片
-// if script.Match(url, `video`) {
-//     text := crawler.GetDoc(url)
-//     text = script.FixURL(text)
-
-//     link := script.Scan(text, `_sd_url":"(https:\/\/.*)","browse`, 1)
-//     links = append(links, link)
-
-var _ = fmt.Println

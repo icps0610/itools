@@ -11,7 +11,7 @@ import (
 
 func EnUrlPost(c *gin.Context) {
     text := c.PostForm("text")
-    text = script.EnUrlCode(text)
+    text = script.EnURLCode(text)
     text = script.EnBase64(text)
 
     returnUrl := fmt.Sprintf(`/urlCode?deUrlCode=%s`, text)
@@ -20,7 +20,7 @@ func EnUrlPost(c *gin.Context) {
 
 func DeUrlPost(c *gin.Context) {
     text := c.PostForm("text")
-    text = script.DeUrlCode(text)
+    text = script.DeURLCode(text)
     text = script.EnBase64(text)
 
     returnUrl := fmt.Sprintf(`/urlCode?enUrlCode=%s`, text)

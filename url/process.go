@@ -3,6 +3,7 @@ package url
 import (
     "fmt"
 
+    "iTools/crawler"
     "iTools/script"
 )
 
@@ -18,7 +19,7 @@ func processURL(url string) string {
         url = processNetflix(url)
     }
 
-    url = script.DeUrlCode(url)
+    url = script.DeURLCode(url)
 
     return url
 }
@@ -33,6 +34,12 @@ func processMobile(url string) string {
 }
 
 func processFB(url string) string {
+    url = crawler.GetRedirectURL(url)
+    url = crawler.GetRedirectURL(url)
+
+    url = script.GetFBVideoURL(url)
+
+    // url = script.ReplaceWWW(url)
 
     return url
 }

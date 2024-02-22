@@ -39,11 +39,11 @@ func DeBase64(str string) string {
     return string(s)
 }
 
-func EnUrlCode(str string) string {
+func EnURLCode(str string) string {
     return url.QueryEscape(str)
 }
 
-func DeUrlCode(str string) string {
+func DeURLCode(str string) string {
     decodedString, _ := url.QueryUnescape(str)
     return decodedString
 }
@@ -65,6 +65,13 @@ func SplitText(text string) []string {
 func To_i(s string) int {
     i, _ := strconv.Atoi(s)
     return i
+}
+
+func DeUnicode(str string) string {
+    str = fmt.Sprintf(`"%s"`, str)
+    deStr, err := strconv.Unquote(str)
+    printError(err)
+    return deStr
 }
 
 func printError(err error) {

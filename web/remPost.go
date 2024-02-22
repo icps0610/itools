@@ -12,7 +12,7 @@ import (
 
 func RemPost(c *gin.Context) {
     text := c.PostForm("text")
-    text = script.DeUrlCode(text)
+    text = script.DeURLCode(text)
 
     setRemText(c, text)
 

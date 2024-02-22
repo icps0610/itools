@@ -13,9 +13,10 @@ func GetUrlTitle(url string) string {
     var title, channel string
 
     // 若是FB的影片
-    if script.IsFacebook(url) && (script.Match(url, `\/watch\?v`) || script.Match(url, `\/reel\/`)) {
+    if script.IsFacebookVideo(url) {
         // 先替換網址
         url = script.ReplaceWWW(url)
+
         doc := GetDocSoup(url)
 
         // 依照貼文分隔
@@ -27,10 +28,36 @@ func GetUrlTitle(url string) string {
             title = getFindText(div, `p`, 0)
         }
 
+        divs = doc.FindAll("div", "id", "m_story_permalink_view")
+
+        if len(divs) > 0 {
+            div := divs[0]
+            channel = div.Find("strong").FullText()
+
+            title = getFindText(div, `p`, 0)
+        }
         return channel + " - " + title
     }
 
     doc := GetDocSoup(url)
+
+    // 若是 Facebook
+    if script.IsFacebook(url) {
+        for _, meta := range doc.FindAll(`script`) {
+            text := meta.FullText()
+
+            channel := script.Scan(text, `"owner":{"__typename":"User","name":"(.*)","profile_picture"`, 1)
+            channel = script.DeUnicode(channel)
+
+            title := script.Scan(text, `,"text":"(.*)"\},"message_preferred_body":`, 1)
+            title = script.DeUnicode(title)
+            title = strings.Replace(title, "\n", ` `, -1)
+
+            if channel != "" {
+                return channel + " - " + title
+            }
+        }
+    }
 
     // 若是 youtube
     if script.IsYoutube(url) {
