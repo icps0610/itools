@@ -2,7 +2,10 @@
             <h3>記憶</h3>
             <form action="/remID" method="post" enctype="multipart/form-data">
                 <div class="input-group mb-3">
-                    <input type="text" id="id" name="id" value="{{ .id }}" class="form-control mb-1" placeholder="提取碼 ..." autocomplete="off">
+                    <div class="input-group-append">
+                        <span class="input-group-text" id="basic-addon1">頻道</span>
+                    </div>
+                    <input type="text" id="id" name="id" value="{{ .id }}" class="form-control mb-1" placeholder="請輸入頻道..." autocomplete="off">
                     <div class="input-group-append">
                         <input type="submit" class="input-group-text" value="傳送"></form>
                     </div>
