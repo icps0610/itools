@@ -3,7 +3,7 @@ package carry64
 func Carry(num, gate int) string {
     var ans string
     for _, c := range ToCarry(gate, num, []int{}) {
-        ans += CHR[c]
+        ans += chrTable[c]
     }
     return ans
 }

@@ -4,7 +4,7 @@ import (
     "strings"
 )
 
-var CHR = strings.Split(`0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_`, ``)
+var chrTable = strings.Split(`0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_`, ``)
 
 func ToCarry(gate, quotient int, arr []int) []int {
     arr = append(arr, quotient%gate)
@@ -41,7 +41,7 @@ func reverse(arr []int) []int {
 }
 
 func getIndex(r rune) int {
-    for i, e := range CHR {
+    for i, e := range chrTable {
         if e == string(r) {
             return i
         }

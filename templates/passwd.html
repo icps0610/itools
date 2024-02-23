@@ -1,0 +1,38 @@
+{{- template "top" . }}
+
+            <h3>產生隨機密碼</h3>
+            <form action="/passwd" method="post" enctype="multipart/form-data">
+                <div class="input-group mb-1">
+                    <div class="input-group-append">
+                        <span class="input-group-text">字元</span>
+                    </div>
+                    <input type="text" name="chrTable" value="{{ .chrTable }}" class="form-control mb-1" placeholder="請輸入字元..." autocomplete="off">
+                </div>
+
+                <div class="input-group mb-1">
+                    <div class="input-group-append">
+                        <span class="input-group-text">長度</span>
+                    </div>
+                   <input type="text" name="count" value="{{ .count }}" class="form-control mb-1" placeholder="請輸入長度..." autocomplete="off">
+                </div>
+                
+                <input type="submit" class="input-group-text mb-3" style="float: right;" value="產生">
+            </form>      
+
+            {{- if ne .passwd "" }}
+                <center>
+                    <textarea id="copyText" rows="3" class="form-control">
+                    {{- .passwd -}}
+                    </textarea>
+                </center>
+                <div style="text-align: right;">
+                    <button onclick="copyText()" class="form-control">複製</button>
+                </div>
+            {{ end -}}
+
+
+{{- template "scriptCopyText" . }}
+
+{{- template "bottom" . }}
+
+{{- template "pasteAndSend" . }}

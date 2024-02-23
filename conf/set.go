@@ -5,8 +5,9 @@ import (
 )
 
 var (
-    Mode   = getMode()
-    Cookie = os.Getenv("cookie")
+    Mode     = getMode()
+    Cookie   = os.Getenv("cookie")
+    ChrTable = `0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz`
 )
 
 func getMode() string {

@@ -34,6 +34,9 @@ func main() {
     router.POST("/enUrl", EnUrlPost)
     router.POST("/deUrl", DeUrlPost)
 
+    router.GET("/passwd", PasswdGet)
+    router.POST("/passwd", PasswdPost)
+
     if conf.Mode == `pi` || conf.Mode == `debug` {
         router.GET("/share", ShareGet)
         router.GET("/share/:base64FileName", ShareDownload)

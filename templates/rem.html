@@ -1,32 +1,33 @@
 {{- template "top" . }}
             <h3>記憶</h3>
+            
             <form action="/remID" method="post" enctype="multipart/form-data">
-                <div class="input-group mb-3">
+                <div class="input-group mb-1">
                     <div class="input-group-append">
                         <span class="input-group-text" id="basic-addon1">頻道</span>
                     </div>
                     <input type="text" id="id" name="id" value="{{ .id }}" class="form-control mb-1" placeholder="請輸入頻道..." autocomplete="off">
                     <div class="input-group-append">
-                        <input type="submit" class="input-group-text" value="傳送"></form>
+                        <input type="submit" class="input-group-text" value="設定"></form>
                     </div>
                 </div>
             </form>
             <form id="send" action="/rem" method="post" enctype="multipart/form-data">
-                <div class="input-group mb-3">
+                <div class="input-group mb-1">
                     <input type="hidden" name="id" value="{{ .id }}">
                     <textarea id="copyText" name="text" rows="5" class="form-control" >{{ .text }}</textarea>
                 </div>
                 <input type="button" id="pasteButton" value="貼上" class="form-control mb-1">
-                <input type="button" id="sendButton" value="儲存" class="form-control mb-5">
+                <input type="button" id="sendButton" value="儲存" class="form-control mb-3">
             </form>
 
-            <button id="copyLastLine" class="form-control mb-3">複製最後一行</button>
+            <button id="copyLastLine" class="form-control mb-1">複製最後一行</button>
 
-            <button onclick="copyText()" class="form-control mb-5">複製全部</button>
+            <button onclick="copyText()" class="form-control mb-3">複製全部</button>
 
-            <button onclick="deleteLastLine()" class="form-control mb-3">清除最後一行</button>
+            <button onclick="deleteLastLine()" class="form-control mb-1">清除最後一行</button>
 
-            <button onclick="deleteAll()" class="form-control mb-3">清除存檔</button>
+            <button onclick="deleteAll()" class="form-control mb-1">清除存檔</button>
 
 <script>
 // 複製

@@ -7,10 +7,11 @@
     
     <link rel="stylesheet" href="/static/bootstrap.css">
 
-    <script src="/static/bootstrap.js"></script>
-    
+    <script src="/static/bootstrap.bundle.min.js"></script>
+
     <title>iTools</title>
 </head>
+
 <body>
     <nav class="navbar navbar-dark bg-dark navbar-expand-sm">
         <div class="container-sm">
@@ -42,13 +43,18 @@
                         <a class="nav-link{{ if eq .active `/carry` }} active{{ end }}" href="/carry">進位</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link{{ if eq .active `/base64` }} active{{ end }}" href="/base64">base64</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link{{ if eq .active `/urlCode` }} active{{ end }}" href="/urlCode">urlCode</a>
+                        <a class="nav-link{{ if eq .active `/passwd` }} active{{ end }}" href="/passwd">密碼</a>
                     </li>
 
-                </ul>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link {{ if or (eq .active `/base64`) (eq .active `/urlCode`) }}active{{ end }} dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            編碼
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="/base64">base64</a></li>
+                            <li><a class="dropdown-item" href="/urlCode">urlCode</a></li>
+                        </ul>
+                    </li>
             </div>
         </div>
     </nav>

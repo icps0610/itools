@@ -20,6 +20,8 @@ func RemPost(c *gin.Context) {
         script.WriteFile(text, remPath)
     }
 
+    setMeg(c, "success", "已存檔")
+
     c.Redirect(http.StatusMovedPermanently, returnURL)
 }
 
@@ -28,6 +30,8 @@ func RemIDPost(c *gin.Context) {
 
     id := c.PostForm("id")
     setRemText(c, id)
+
+    setMeg(c, "success", "已設定頻道 "+id)
 
     c.Redirect(http.StatusMovedPermanently, returnURL)
 }

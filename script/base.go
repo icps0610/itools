@@ -90,6 +90,19 @@ func deUnidcode(str string) string {
     return deStr
 }
 
+func RandList(str string, count int) string {
+    list := strings.Split(str, "")
+    var result string
+    for len(result) < count {
+        result += randChr(list)
+    }
+    return result
+}
+
+func randChr(list []string) string {
+    return list[rand.Intn(len(list))]
+}
+
 func printError(err error) {
     if err != nil {
         fmt.Println(err)
