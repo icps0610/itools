@@ -1,14 +1,14 @@
 package url
 
 import (
-// "iTools/simpToTrad"
+    "iTools/simpToTrad"
 )
 
 func Run(url string) (string, string) {
     url = processURL(url)
 
     title := GetUrlTitle(url)
-    // title = simpToTrad.Run(title)
+    title = simpToTrad.Run(title)
 
     return url, title
 }
