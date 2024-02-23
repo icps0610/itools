@@ -11,7 +11,7 @@ import (
     "strings"
     "time"
 
-    "iTools/carry62"
+    "iTools/carry64"
 )
 
 func init() {
@@ -50,7 +50,7 @@ func DeURLCode(str string) string {
 
 func zipNum(str string) string {
     i := To_i(str)
-    return carry62.Carry(i, 62)
+    return carry64.Carry(i, 62)
 }
 
 func SplitText(text string) []string {

@@ -13,6 +13,7 @@ import (
 
 func DownloadGet(c *gin.Context) {
     // 讀取參數
+    url := c.Query("url")
     links := c.Query("link")
     links = strings.Replace(links, " ", "+", -1)
 
@@ -47,6 +48,7 @@ func DownloadGet(c *gin.Context) {
         "msg":     getMsg(c),
         "bgColor": getBgColor(c),
 
+        "url":       url,
         "linkDatas": linkDatas,
     })
 }

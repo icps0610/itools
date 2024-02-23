@@ -27,7 +27,7 @@
                     <li class="nav-item">
                         <a class="nav-link{{ if eq .active `/url` }} active{{ end }}" aria-current="page" href="/url">網址</a>
                     </li>
-                    {{ if eq mode `pi`}}
+                    {{ if or (eq mode `pi`) (eq mode `debug`) }}
                     <li class="nav-item">
                         <a class="nav-link{{ if eq .active `/share` }} active{{ end }}" href="/share">分享</a>
                     </li>
@@ -187,3 +187,42 @@ function copyText() {
             </center>
     {{- end }}
 {{- end }}
+
+
+
+{{- define "pasteAndSend" }}
+<script>
+// 複製並傳送
+document.getElementById('send').addEventListener('submit', function(event) {
+    event.preventDefault(); // 防止表單默認提交行為
+    
+  // 從剪貼簿讀取內容
+    if (navigator.clipboard) {
+        navigator.clipboard.readText().then(function(clipboardText) {
+            
+            // 如果剪貼簿有內容，則將其附加到 url 中的內容後面
+            if (clipboardText) {
+                document.getElementById('url').value = clipboardText;
+            }
+            document.getElementById('send').submit();
+        }).catch(function(err) {
+            console.error('無法讀取剪貼簿內容：', err);
+            document.getElementById('send').submit(); // 在出錯時也提交表單
+        });
+    } else {
+        // 如果 navigator.clipboard 是空值，直接提交表單
+        document.getElementById('send').submit();
+    }
+});
+
+// 清空
+function clearInput() {
+    var inputElement = document.getElementById("url");
+    if (inputElement) {
+        inputElement.value = "";
+    } else {
+        console.error("找不到指定的 input 元素");
+    }
+}
+</script>
+{{- end -}}

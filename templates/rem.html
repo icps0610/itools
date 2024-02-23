@@ -1,29 +1,33 @@
 {{- template "top" . }}
             <h3>記憶</h3>
-
-            <form  id="myForm" action="/rem" method="post" enctype="multipart/form-data">
-                <textarea id="copyText" name="text" rows="5" class="form-control" >{{ .text }}</textarea>
-
-                <input type="submit" value="貼上複製內容並傳送" class="form-control mb-5">
+            <form action="/remID" method="post" enctype="multipart/form-data">
+                <div class="input-group mb-3">
+                    <input type="text" id="id" name="id" value="{{ .id }}" class="form-control mb-1" placeholder="提取碼 ..." autocomplete="off">
+                    <div class="input-group-append">
+                        <input type="submit" class="input-group-text" value="傳送"></form>
+                    </div>
+                </div>
+            </form>
+            <form id="send" action="/rem" method="post" enctype="multipart/form-data">
+                <div class="input-group mb-3">
+                    <input type="hidden" name="id" value="{{ .id }}">
+                    <textarea id="copyText" name="text" rows="5" class="form-control" >{{ .text }}</textarea>
+                </div>
+                <input type="button" id="pasteButton" value="貼上" class="form-control mb-1">
+                <input type="button" id="sendButton" value="儲存" class="form-control mb-5">
             </form>
 
             <button id="copyLastLine" class="form-control mb-3">複製最後一行</button>
 
             <button onclick="copyText()" class="form-control mb-5">複製全部</button>
 
-            <form action="/remRmLast" method="post" enctype="multipart/form-data">
-                <input type="submit" value="清除最後一行" class="form-control mb-3">
-            </form>
+            <button onclick="deleteLastLine()" class="form-control mb-3">清除最後一行</button>
 
-            <form action="/remClear" method="post" enctype="multipart/form-data">
-                <input type="submit" value="清除" class="form-control">
-            </form>
+            <button onclick="deleteAll()" class="form-control mb-3">清除存檔</button>
 
 <script>
-// 複製並傳送
-document.getElementById('myForm').addEventListener('submit', function(event) {
-    event.preventDefault(); // 防止表單默認提交行為
-    
+// 複製
+document.getElementById("pasteButton").addEventListener("click", function(event) {
   // 從剪貼簿讀取內容
     if (navigator.clipboard) {
         navigator.clipboard.readText().then(function(clipboardText) {
@@ -37,16 +41,16 @@ document.getElementById('myForm').addEventListener('submit', function(event) {
                 // 更新 textarea 中的內容
                 document.getElementById('copyText').value = textareaContent;
             }
-            document.getElementById('myForm').submit();
         }).catch(function(err) {
             console.error('無法讀取剪貼簿內容：', err);
-            document.getElementById('myForm').submit(); // 在出錯時也提交表單
         });
-    } else {
-        // 如果 navigator.clipboard 是空值，直接提交表單
-        document.getElementById('myForm').submit();
     }
+});
 
+// 傳送
+document.getElementById("sendButton").addEventListener("click", function(event) {
+    event.preventDefault();
+    document.getElementById("send").submit();
 });
 
 // 複製最後一行
@@ -92,8 +96,22 @@ document.getElementById("copyLastLine").addEventListener("click", function() {
     document.body.removeChild(tempTextarea);
 });
 
+// 清除最後一行
+function deleteLastLine() {
+    var textarea = document.getElementById("copyText");
+    var lines = textarea.value.split("\n");
+    lines.pop(); // 移除最後一行
+    textarea.value = lines.join("\n");
+}
+
+function deleteAll() {
+    document.getElementById("copyText").value = "";
+    document.getElementById("send").submit();
+}
 </script>
 
 {{- template "scriptCopyText" . }}
 
 {{- template "bottom" . }}
+
+

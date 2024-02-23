@@ -39,7 +39,7 @@ func GetUrlTitle(url string) string {
 
             title = getFindText(div, `p`, 0)
         }
-        return channel + " - " + title
+        return tileAndChannel(title, channel)
     }
 
     doc := crawler.GetDocSoup(url)
@@ -63,7 +63,7 @@ func GetUrlTitle(url string) string {
                 title = strings.Replace(title, `\n`, ` `, -1)
                 title = script.DeUnicode(title)
 
-                return channel + " - " + title
+                return tileAndChannel(title, channel)
             }
         }
     }
@@ -73,7 +73,18 @@ func GetUrlTitle(url string) string {
         channel = getDocText(doc, "link", "itemprop", "name")
         title = getDocText(doc, "meta", "name", "title")
 
-        return channel + " - " + title
+        return tileAndChannel(title, channel)
+    }
+
+    // 若是 instagram
+    if script.IsInstagram(url) {
+        channel = getDocText(doc, "meta", "name", "twitter:title")
+        channel = strings.Replace(channel, ` • Instagram reel`, ``, -1)
+
+        title = getDocText(doc, "meta", "name", "description")
+        title = script.Scan(title, `"(.*)"`, 1)
+
+        return tileAndChannel(title, channel)
     }
 
     // FB - https://www.facebook.com/\w+/posts/\d+?ref=embed_post
@@ -110,6 +121,10 @@ func getFindText(doc soup.Root, ele string, idx int) string {
         return e[idx].FullText()
     }
     return ""
+}
+
+func tileAndChannel(title, channel string) string {
+    return fmt.Sprintf(`%s [ %s ]`, title, channel)
 }
 
 var _ = fmt.Println

@@ -10,7 +10,7 @@ import (
 func GetEmoji(texts string) string {
     group := strings.Split(texts, `\u`)
 
-    if len(group) > 2 {
+    if len(group) == 3 {
         n0 := toUint16(group[1])
         n1 := toUint16(group[2])
 

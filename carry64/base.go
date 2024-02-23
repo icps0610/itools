@@ -1,10 +1,10 @@
-package carry62
+package carry64
 
 import (
     "strings"
 )
 
-var CHR = strings.Split("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz", "")
+var CHR = strings.Split(`0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_`, ``)
 
 func ToCarry(gate, quotient int, arr []int) []int {
     arr = append(arr, quotient%gate)

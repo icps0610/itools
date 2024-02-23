@@ -1,13 +1,17 @@
 {{- template "top" . }}
  
                 <h5>請輸入 FB / IG / threads / LinkedIn 網址</h5>
-                <form action="/download" method="post" enctype="multipart/form-data">
+                <form id="send" action="/download" method="post" enctype="multipart/form-data">
                 <div class="input-group mb-3">
-                    <input type="text" name="url" class="form-control" placeholder="輸入 ..." autocomplete="off">
+                    <input type="text" id="url" name="url" value="{{ .url }}" class="form-control" placeholder="輸入 ..." autocomplete="off">
                     <div class="input-group-append">
-                        <input type="submit" class="input-group-text" value="傳送"></form>
+                        <input type="submit" class="input-group-text" value="貼上並傳送"></form>
+                    </div>
+                    <div class="input-group-append">
+                        <button type="button" onclick="clearInput()" class="input-group-text">清空</button>
                     </div>
                 </div>
+
                 {{- if gt (len .linkDatas) 0 }}
                     <table class="table table-striped">
                         <tbody>
@@ -35,4 +39,5 @@
 
 {{- template "bottom" . }}
 
+{{- template "pasteAndSend" . }}
 

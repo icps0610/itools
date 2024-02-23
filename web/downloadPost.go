@@ -71,7 +71,7 @@ func DownloadPost(c *gin.Context) {
     var returnUrl = `/download`
 
     // 把網址改base64合併回傳
-    returnUrl = enBase64AndCombLink(links)
+    returnUrl = enBase64AndCombLink(links) + fmt.Sprintf(`&url=%s`, url)
     c.Redirect(http.StatusMovedPermanently, returnUrl)
 }
 

@@ -12,8 +12,7 @@ func main() {
 
     router.GET("/rem", RemGet)
     router.POST("/rem", RemPost)
-    router.POST("/remRmLast", RemRmLast)
-    router.POST("/remClear", RemClear)
+    router.POST("/remID", RemIDPost)
 
     router.GET("/download", DownloadGet)
     router.POST("/download", DownloadPost)

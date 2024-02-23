@@ -1,7 +1,6 @@
 package crawler
 
 import (
-    "fmt"
     "io/ioutil"
     "net/http"
 
@@ -45,7 +44,7 @@ func GetDoc(url string) string {
         return ""
     }
 
-    // writeFile(string(body), `z:\doc.html`)
+    // script.WriteFile(string(body), `z:\doc.html`)
     return string(body)
 }
 
@@ -75,17 +74,6 @@ func GetDocSoup(url string) soup.Root {
     txt := GetDoc(url)
 
     return soup.HTMLParse(txt)
-}
-
-func writeFile(content, path string) {
-    err := ioutil.WriteFile(path, []byte(content), 0777)
-    printError(err)
-}
-
-func printError(err error) {
-    if err != nil {
-        fmt.Println(err)
-    }
 }
 
 var userAgent = `Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Mobile Safari/537.36`

@@ -16,6 +16,10 @@ func IsYoutube(url string) bool {
     return Match(url, `youtube`) || Match(url, `youtu\.be`)
 }
 
+func IsInstagram(url string) bool {
+    return Match(url, `instagram`)
+}
+
 func IsFacebook(url string) bool {
     return Match(url, `facebook`) || Match(url, `fb`)
 }

@@ -1,4 +1,4 @@
-package carry62
+package carry64
 
 func Carry(num, gate int) string {
     var ans string

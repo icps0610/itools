@@ -75,7 +75,7 @@ func getRootDirPath() string {
 
 func getTempDirPath() string {
     if runtime.GOOS == "windows" {
-        return `z:\`
+        return `z:\Temp\`
     }
     return `/tmp/`
 }
