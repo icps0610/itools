@@ -1,6 +1,7 @@
 {{- template "top" . }}
 
             <h3>數字和進位(2-64)</h3>
+            <h5 style="color: gray; font-size: smaller;" class="mb-3">0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_</h5>
             <form action="/carry" method="post" enctype="multipart/form-data">
             <div class="input-group mb-3">
                 <input type="text" name="num1" class="form-control" placeholder="數字1 ..." autocomplete="off" value="{{ .num1 }}">
