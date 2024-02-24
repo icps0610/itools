@@ -45,7 +45,7 @@ func GetDoc(url string) string {
         return ""
     }
 
-    script.WriteFile(string(body), `z:\doc.html`)
+    // script.WriteFile(string(body), `z:\doc.html`)
     return string(body)
 }
 
