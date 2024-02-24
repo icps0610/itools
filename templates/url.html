@@ -1,6 +1,8 @@
 {{- template "top" . }}
 
             <h3>請輸入網址</h3>
+            <h5 style="color: gray; font-size: 16px;" class="mb-3"> FB / IG / threads / LinkedIn 可分析下載網址</h5>
+
             <form id="send" action="/url" method="post" enctype="multipart/form-data">
             <div class="input-group mb-3">
                 <input type="text" id="url" name="url" class="form-control" placeholder="輸入 ..." autocomplete="off">
@@ -12,19 +14,41 @@
                 </div>
             </div>
 
-
-            {{- if ne .link "" }}
+            {{- if ne .url "" }}
                 <center>
-                    <textarea id="copyText" rows="3" class="form-control">
-                    {{- .link -}}
+                    <textarea id="copyText" rows="5" class="form-control">
+                    {{- .url -}}
                     </textarea>
                 </center>
                 <div style="text-align: right;">
-                    <button onclick="copyText()" class="form-control">複製</button>
+                    <button onclick="copyText()" class="form-control mb-5">複製</button>
                 </div>
+            {{ end -}}
+
+            {{- if gt (len .linkDatas) 0 }}
+                <table class="table table-striped">
+                    <tbody>
+                        {{ range .linkDatas }}
+                        <tr>
+                            <td>{{ .ID }}</td>
+                            <td>{{ .Type }}</td>
+                            <td><a href="{{ .Link }}" download="{{ .ID }}.mp4" target="_blank">網址</a></td>
+                        </tr>
+                        {{ end }}
+                    </tbody>
+                </table>
+
+            <center>
+                <textarea id="textarea" class="form-control">
+                {{- range .linkDatas -}}
+                    {{- .Link }} &#10;
+                {{- end -}}
+                </textarea>
+            </center>
             {{ end -}}
 
 
 {{- template "bottom" . }}
 
 {{- template "pasteAndSend" . }}
+{{- template "scriptCopyText" . }}

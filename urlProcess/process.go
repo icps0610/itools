@@ -1,4 +1,4 @@
-package url
+package urlProcess
 
 import (
     "fmt"
@@ -8,7 +8,7 @@ import (
     "iTools/script"
 )
 
-func processURL(url string) string {
+func ProcessURL(url string) string {
     url = removeFBID(url)
     url = removeUtmSource(url)
     url = processMobile(url)

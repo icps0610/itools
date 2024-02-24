@@ -10,21 +10,21 @@ func main() {
 
     router.GET("/", IndexGet)
 
+    router.GET("/url", UrlGet)
+    router.POST("/url", UrlPost)
+
     router.GET("/rem", RemGet)
     router.POST("/rem", RemPost)
     router.POST("/remID", RemIDPost)
-
-    router.GET("/download", DownloadGet)
-    router.POST("/download", DownloadPost)
-
-    router.GET("/url", UrlGet)
-    router.POST("/url", UrlPost)
 
     router.GET("/indent", IndentGet)
     router.POST("/indent", IndentPost)
 
     router.GET("/carry", CarryGet)
     router.POST("/carry", CarryPost)
+
+    router.GET("/passwd", PasswdGet)
+    router.POST("/passwd", PasswdPost)
 
     router.GET("/base64", Base64Get)
     router.POST("/enBase64", EnBase64Post)
@@ -33,9 +33,6 @@ func main() {
     router.GET("/urlCode", UrlCodeGet)
     router.POST("/enUrl", EnUrlPost)
     router.POST("/deUrl", DeUrlPost)
-
-    router.GET("/passwd", PasswdGet)
-    router.POST("/passwd", PasswdPost)
 
     if conf.Mode == `pi` || conf.Mode == `debug` {
         router.GET("/share", ShareGet)

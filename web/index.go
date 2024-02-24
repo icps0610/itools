@@ -7,5 +7,5 @@ import (
 )
 
 func IndexGet(c *gin.Context) {
-    c.Redirect(http.StatusMovedPermanently, `/download`)
+    c.Redirect(http.StatusMovedPermanently, `/url`)
 }

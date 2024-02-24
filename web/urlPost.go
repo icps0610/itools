@@ -5,30 +5,97 @@ import (
     "github.com/gin-gonic/gin"
     "net/http"
     "strconv"
+    "strings"
 
+    "iTools/crawler"
+    "iTools/linkedin"
     "iTools/script"
-    "iTools/url"
+    "iTools/simpToTrad"
+    "iTools/urlProcess"
 )
 
 func UrlPost(c *gin.Context) {
-    // 輸入的 Unicode 轉義序列
+    var docText string
 
-    urlstr := c.PostForm("url")
-    urlstr = script.DeURLCode(urlstr)
+    url := c.PostForm("url")
+    url = script.DeURLCode(url)
 
     // 只擷取網址部分
-    urlstr = script.GrapURL(urlstr)
+    url = script.GrapURL(url)
 
-    var msg string
-    if urlstr == "" || !script.IsURL(urlstr) {
-        setMeg(c, "alert", "請輸入網址")
-    } else {
-        u, title := url.Run(urlstr)
+    // 先還原 facebook
+    if script.IsFacebook(url) {
 
-        msg = script.EnBase64(title + "\n" + u)
+        // 先替換網址
+        url = script.GetFBVideoURL(url)
+
     }
 
-    returnUrl := fmt.Sprintf(`/url?link=%s`, msg)
+    var returnUrl = `/download`
+
+    if url == "" || !script.IsURL(url) {
+        setMeg(c, "alert", "請輸入網址")
+    } else {
+        url = urlProcess.ProcessURL(url)
+
+        var title string
+        title, docText = urlProcess.GetTitle(url)
+        title = simpToTrad.Run(title)
+
+        msg := script.EnBase64(title + "\n" + url)
+        returnUrl = fmt.Sprintf(`/url?url=%s`, msg)
+    }
+
+    // download
+    {
+        var links []string
+
+        // 判斷網址
+        if script.IsWebSite(url, `threads`) || script.IsWebSite(url, `instagram`) {
+
+            // 開始爬
+            // docText = crawler.GetDoc(url)
+
+            // 獲取影片網址
+            lks := script.GetThreadsLink(docText)
+            links = append(links, lks...)
+
+        } else if script.IsWebSite(url, `linkedin`) {
+
+            // 開始爬
+            doc := crawler.GetTextSoup(docText)
+
+            link := script.GetLinkedInLink(doc)
+            links = append(links, link)
+
+            // 其他相關貼文
+            urls := script.GetLinkedInRelate(doc)
+            lks := linkedin.JobQueene(urls)
+
+            links = append(links, lks...)
+
+        } else if script.IsFacebook(url) {
+
+            // 開始爬
+            doc := crawler.GetTextSoup(docText)
+
+            lks := script.GetFBLink(doc)
+
+            links = append(links, lks...)
+
+        }
+
+        // if len(links) == 0 {
+        //     setMeg(c, "alert", "請輸入 Facebook / threads / LinkedIn 網址")
+        // }
+
+        if len(links) > 0 {
+            // 把網址改base64合併回傳
+            returnUrl += fmt.Sprintf(`&downloadLink=%s`, enBase64AndCombLink(links))
+        }
+
+    }
+
     c.Redirect(http.StatusMovedPermanently, returnUrl)
 }
 
@@ -65,4 +132,11 @@ func splitString(s, sep string) []string {
         s = s[i:]
     }
     return parts
+}
+
+func enBase64AndCombLink(links []string) string {
+    for idx := range links {
+        links[idx] = script.EnBase64(links[idx])
+    }
+    return strings.Join(links, "_")
 }

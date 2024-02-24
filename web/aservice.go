@@ -30,7 +30,8 @@ var (
 )
 
 func init() {
-    os.Mkdir(UploadPath, 777)
+    os.Mkdir(TempDirPath, 411)
+    os.Mkdir(UploadPath, 411)
 }
 
 func Service() *gin.Engine {
@@ -75,9 +76,9 @@ func getRootDirPath() string {
 
 func getTempDirPath() string {
     if runtime.GOOS == "windows" {
-        return `z:\Temp\`
+        return `z:\Temp\iTools\`
     }
-    return `/tmp/`
+    return `/tmp/iTools/`
 }
 
 func setMeg(c *gin.Context, typeName, msg string) {

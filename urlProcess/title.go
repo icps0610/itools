@@ -1,4 +1,4 @@
-package url
+package urlProcess
 
 import (
     "fmt"
@@ -10,7 +10,9 @@ import (
     "iTools/script"
 )
 
-func GetUrlTitle(url string) string {
+func GetTitle(url string) (string, string) {
+    var docText string
+
     var title, channel string
 
     // 若是FB的影片
@@ -19,8 +21,8 @@ func GetUrlTitle(url string) string {
         // 先替換網址
         url = script.ReplaceWWW(url)
 
-        doc := crawler.GetDocSoup(url)
-
+        docText := crawler.GetDoc(url)
+        doc := crawler.GetTextSoup(docText)
         // FB - https://www.facebook.com/reel/\d+
         // FB - https://www.facebook.com/watch?v=\d+
 
@@ -39,10 +41,15 @@ func GetUrlTitle(url string) string {
 
             title = getFindText(div, `p`, 0)
         }
-        return tileAndChannel(title, channel)
+        return tileAndChannel(title, channel), docText
+
+    } else if script.IsFacebook(url) {
+        url = crawler.GetRedirectURL(url)
+        // url = crawler.GetRedirectURL(url)
     }
 
-    doc := crawler.GetDocSoup(url)
+    docText = crawler.GetDoc(url)
+    doc := crawler.GetTextSoup(docText)
 
     // 有些有
     // FB - https://www.facebook.com/photo/?fbid=\d+&set=pob.\d+
@@ -63,7 +70,7 @@ func GetUrlTitle(url string) string {
                 title = strings.Replace(title, `\n`, ` `, -1)
                 title = script.DeUnicode(title)
 
-                return tileAndChannel(title, channel)
+                return tileAndChannel(title, channel), docText
             }
         }
     }
@@ -73,7 +80,7 @@ func GetUrlTitle(url string) string {
         channel = getDocText(doc, "link", "itemprop", "name")
         title = getDocText(doc, "meta", "name", "title")
 
-        return tileAndChannel(title, channel)
+        return tileAndChannel(title, channel), docText
     }
 
     // 若是 instagram
@@ -84,7 +91,7 @@ func GetUrlTitle(url string) string {
         title = getDocText(doc, "meta", "name", "description")
         title = script.Scan(title, `"(.*)"`, 1)
 
-        return tileAndChannel(title, channel)
+        return tileAndChannel(title, channel), docText
     }
 
     // FB - https://www.facebook.com/\w+/posts/\d+?ref=embed_post
@@ -98,7 +105,7 @@ func GetUrlTitle(url string) string {
     title = strings.TrimSpace(title)
     title = strings.Replace(title, "\n", "", -1)
 
-    return title
+    return title, docText
 }
 
 func getDocText(doc soup.Root, tag, class, value string) string {

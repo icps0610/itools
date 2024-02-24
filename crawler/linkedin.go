@@ -5,7 +5,7 @@ import (
 )
 
 func GetDocLink(url string) string {
-    doc := GetDocSoup(url)
+    doc := GetURLSoup(url)
     link := script.GetLinkedInLink(doc)
 
     return link

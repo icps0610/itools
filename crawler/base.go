@@ -1,6 +1,7 @@
 package crawler
 
 import (
+    "fmt"
     "io/ioutil"
     "net/http"
 
@@ -70,10 +71,17 @@ func GetRedirectURL(url string) string {
     return url
 }
 
-func GetDocSoup(url string) soup.Root {
+func GetURLSoup(url string) soup.Root {
     txt := GetDoc(url)
 
     return soup.HTMLParse(txt)
 }
 
+func GetTextSoup(docText string) soup.Root {
+
+    return soup.HTMLParse(docText)
+}
+
 var userAgent = `Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Mobile Safari/537.36`
+
+var _ = fmt.Println
