@@ -22,12 +22,14 @@ func RandNumInt(min, max int) int {
     return min + rand.Intn(max-min+1)
 }
 
-func RunCmd(cmd string) {
+func RunCmd(cmd string) string {
     var bash, args = `bash`, `-c`
     if runtime.GOOS == "windows" {
         bash, args = `cmd`, `/c`
     }
-    exec.Command(bash, args, cmd).CombinedOutput()
+    o, err := exec.Command(bash, args, cmd).CombinedOutput()
+    printError(err)
+    return string(o)
 }
 
 func EnBase64(str string) string {

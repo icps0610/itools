@@ -41,8 +41,8 @@ func processFB(url string) string {
         url = crawler.GetRedirectURL(url)
     }
 
+    // 針對 影片 網址處理
     url = strings.Replace(url, `watch/?v=`, `watch?v=`, -1)
-
     url = script.GetFBVideoURL(url)
 
     // url = script.ReplaceWWW(url)

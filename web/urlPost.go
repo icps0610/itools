@@ -7,93 +7,89 @@ import (
     "strconv"
     "strings"
 
+    "iTools/conf"
     "iTools/crawler"
     "iTools/linkedin"
     "iTools/script"
-    "iTools/simpToTrad"
+    // "iTools/simpToTrad"
     "iTools/urlProcess"
 )
 
 func UrlPost(c *gin.Context) {
-    var docText string
 
     url := c.PostForm("url")
-    url = script.DeURLCode(url)
-
     // 只擷取網址部分
     url = script.GrapURL(url)
 
-    // 先還原 facebook
-    if script.IsFacebook(url) {
+    var returnUrl = `/url?`
+    var docText string
 
-        // 先替換網址
-        url = script.GetFBVideoURL(url)
-
-    }
-
-    var returnUrl = `/download`
-
-    if url == "" || !script.IsURL(url) {
+    if url == "" {
         setMeg(c, "alert", "請輸入網址")
     } else {
         url = urlProcess.ProcessURL(url)
 
+        // 開始爬
         var title string
         title, docText = urlProcess.GetTitle(url)
-        title = simpToTrad.Run(title)
+        // title = simpToTrad.Run(title)
 
         msg := script.EnBase64(title + "\n" + url)
-        returnUrl = fmt.Sprintf(`/url?url=%s`, msg)
+        returnUrl += fmt.Sprintf(`url=%s`, msg)
     }
 
     // download
-    {
-        var links []string
 
-        // 判斷網址
-        if script.IsWebSite(url, `threads`) || script.IsWebSite(url, `instagram`) {
+    var links []string
 
-            // 開始爬
-            // docText = crawler.GetDoc(url)
+    // 判斷網址
+    if script.IsWebSite(url, `threads`) || script.IsWebSite(url, `instagram`) {
 
-            // 獲取影片網址
-            lks := script.GetThreadsLink(docText)
-            links = append(links, lks...)
+        // 開始爬
+        // docText = crawler.GetDoc(url)
 
-        } else if script.IsWebSite(url, `linkedin`) {
+        // 獲取影片網址
+        lks := script.GetThreadsLink(docText)
+        links = append(links, lks...)
 
-            // 開始爬
-            doc := crawler.GetTextSoup(docText)
+    } else if script.IsWebSite(url, `linkedin`) {
 
-            link := script.GetLinkedInLink(doc)
-            links = append(links, link)
+        // 轉換 doc
+        doc := crawler.GetTextSoup(docText)
 
-            // 其他相關貼文
-            urls := script.GetLinkedInRelate(doc)
-            lks := linkedin.JobQueene(urls)
+        link := script.GetLinkedInLink(doc)
+        links = append(links, link)
 
-            links = append(links, lks...)
+        // 其他相關貼文
+        urls := script.GetLinkedInRelate(doc)
+        lks := linkedin.JobQueene(urls)
 
-        } else if script.IsFacebook(url) {
+        links = append(links, lks...)
 
-            // 開始爬
-            doc := crawler.GetTextSoup(docText)
+    } else if script.IsFacebook(url) {
 
-            lks := script.GetFBLink(doc)
+        // 轉換 doc
+        doc := crawler.GetTextSoup(docText)
 
-            links = append(links, lks...)
+        lks := script.GetFBLink(doc)
 
-        }
+        links = append(links, lks...)
 
-        // if len(links) == 0 {
-        //     setMeg(c, "alert", "請輸入 Facebook / threads / LinkedIn 網址")
-        // }
+    }
 
-        if len(links) > 0 {
-            // 把網址改base64合併回傳
-            returnUrl += fmt.Sprintf(`&downloadLink=%s`, enBase64AndCombLink(links))
-        }
+    if conf.Mode == `pi` && script.IsYoutube(url) {
+        cmd := fmt.Sprintf(`youtubedr download %s -d /tmp`, url)
+        err := script.RunCmd(cmd)
+        fmt.Println(cmd, err)
+    }
 
+    // if len(links) == 0 {
+    //     setMeg(c, "alert", "請輸入 Facebook / threads / LinkedIn 網址")
+    // }
+
+    if len(links) > 0 {
+        // 把網址改base64合併回傳
+        returnUrl += fmt.Sprintf(`&downloadLink=%s`, enBase64AndCombLink(links))
     }
 
     c.Redirect(http.StatusMovedPermanently, returnUrl)

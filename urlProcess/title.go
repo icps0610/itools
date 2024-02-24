@@ -11,7 +11,6 @@ import (
 )
 
 func GetTitle(url string) (string, string) {
-    var docText string
 
     var title, channel string
 
@@ -42,13 +41,9 @@ func GetTitle(url string) (string, string) {
             title = getFindText(div, `p`, 0)
         }
         return tileAndChannel(title, channel), docText
-
-    } else if script.IsFacebook(url) {
-        url = crawler.GetRedirectURL(url)
-        // url = crawler.GetRedirectURL(url)
     }
 
-    docText = crawler.GetDoc(url)
+    docText := crawler.GetDoc(url)
     doc := crawler.GetTextSoup(docText)
 
     // 有些有
@@ -70,40 +65,43 @@ func GetTitle(url string) (string, string) {
                 title = strings.Replace(title, `\n`, ` `, -1)
                 title = script.DeUnicode(title)
 
-                return tileAndChannel(title, channel), docText
+                title = tileAndChannel(title, channel)
             }
         }
-    }
 
-    // 若是 youtube
-    if script.IsYoutube(url) {
+    } else if script.IsYoutube(url) {
+
+        // 若是 youtube
+
         channel = getDocText(doc, "link", "itemprop", "name")
         title = getDocText(doc, "meta", "name", "title")
 
-        return tileAndChannel(title, channel), docText
-    }
+        title = tileAndChannel(title, channel)
 
-    // 若是 instagram
-    if script.IsInstagram(url) {
+    } else if script.IsInstagram(url) {
+
+        // 若是 instagram
+
         channel = getDocText(doc, "meta", "name", "twitter:title")
         channel = strings.Replace(channel, ` • Instagram reel`, ``, -1)
 
         title = getDocText(doc, "meta", "name", "description")
         title = script.Scan(title, `"(.*)"`, 1)
 
-        return tileAndChannel(title, channel), docText
+        title = tileAndChannel(title, channel)
+    } else {
+
+        // FB - https://www.facebook.com/\w+/posts/\d+?ref=embed_post
+        // FB - https://www.facebook.com/permalink.php?story_fbid=\d+&id=\d+&ref=embed_post
+        // FB - https://www.facebook.com/groups/\d+/permalink/\d+/?app=fbl
+        // FB - https://www.facebook.com/share/v/\w+/?mibextid=oFDknk
+        // FB - https://www.facebook.com/photo/?fbid=\d+&set=a.\d+
+
+        title = getTitleText(doc)
+
+        title = strings.TrimSpace(title)
+        title = strings.Replace(title, "\n", "", -1)
     }
-
-    // FB - https://www.facebook.com/\w+/posts/\d+?ref=embed_post
-    // FB - https://www.facebook.com/permalink.php?story_fbid=\d+&id=\d+&ref=embed_post
-    // FB - https://www.facebook.com/groups/\d+/permalink/\d+/?app=fbl
-    // FB - https://www.facebook.com/share/v/\w+/?mibextid=oFDknk
-    // FB - https://www.facebook.com/photo/?fbid=\d+&set=a.\d+
-
-    title = getTitleText(doc)
-
-    title = strings.TrimSpace(title)
-    title = strings.Replace(title, "\n", "", -1)
 
     return title, docText
 }

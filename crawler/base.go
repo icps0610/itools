@@ -21,7 +21,7 @@ func getHttpRequest(url string) *http.Request {
     }
 
     // fb instagram
-    req.Header.Set("Cookie", conf.Cookie)
+    req.Header.Set("Cookie", conf.Cookie+`over18=1`)
 
     return req
 }
@@ -45,7 +45,7 @@ func GetDoc(url string) string {
         return ""
     }
 
-    // script.WriteFile(string(body), `z:\doc.html`)
+    script.WriteFile(string(body), `z:\doc.html`)
     return string(body)
 }
 
