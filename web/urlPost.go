@@ -7,11 +7,11 @@ import (
     "strconv"
     "strings"
 
-    "iTools/conf"
+    // "iTools/conf"
     "iTools/crawler"
     "iTools/linkedin"
     "iTools/script"
-    // "iTools/simpToTrad"
+    "iTools/simpToTrad"
     "iTools/urlProcess"
 )
 
@@ -32,7 +32,7 @@ func UrlPost(c *gin.Context) {
         // 開始爬
         var title string
         title, docText = urlProcess.GetTitle(url)
-        // title = simpToTrad.Run(title)
+        title = simpToTrad.Run(title)
 
         msg := script.EnBase64(title + "\n" + url)
         returnUrl += fmt.Sprintf(`url=%s`, msg)
@@ -77,11 +77,21 @@ func UrlPost(c *gin.Context) {
 
     }
 
-    if conf.Mode == `pi` && script.IsYoutube(url) {
-        cmd := fmt.Sprintf(`youtubedr download %s -d /tmp`, url)
-        err := script.RunCmd(cmd)
-        fmt.Println(cmd, err)
-    }
+    // if conf.Mode == `pi` && script.IsYoutube(url) {
+    //     cmd := fmt.Sprintf(`echo 'chdir /d z:\' > /tmp/u2.bat`)
+    //     script.RunCmd(cmd)
+
+    //     cmd = fmt.Sprintf(`echo yt-dlp -f mp4 %s >> /tmp/u2.bat`, url)
+    //     script.RunCmd(cmd)
+
+    //     cmd = fmt.Sprintf(`echo yt-dlp -f m4a %s >> /tmp/u2.bat`, url)
+    //     script.RunCmd(cmd)
+
+    //     cmd = fmt.Sprintf(`chmod 777 /tmp/u2.bat`)
+    //     script.RunCmd(cmd)
+
+    // setMeg(c, "success", fmt.Sprintf(`已將 %s 列入排程`, url))
+    // }
 
     // if len(links) == 0 {
     //     setMeg(c, "alert", "請輸入 Facebook / threads / LinkedIn 網址")

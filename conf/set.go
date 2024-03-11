@@ -2,12 +2,15 @@ package conf
 
 import (
     "os"
+    // "time"
 )
 
 var (
     Mode     = getMode()
     Cookie   = os.Getenv("cookie")
     ChrTable = `0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz`
+
+    // TimeNow = time.Now()
 )
 
 func getMode() string {

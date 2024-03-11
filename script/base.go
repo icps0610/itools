@@ -28,6 +28,7 @@ func RunCmd(cmd string) string {
         bash, args = `cmd`, `/c`
     }
     o, err := exec.Command(bash, args, cmd).CombinedOutput()
+    fmt.Println(cmd)
     printError(err)
     return string(o)
 }

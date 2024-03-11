@@ -15,7 +15,7 @@
 <body>
     <nav class="navbar navbar-dark bg-dark navbar-expand-sm">
         <div class="container-sm">
-            <a class="navbar-brand" href="/">iTools</a>
+            <a class="navbar-brand" href="http://192.168.0.205/">iTools</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
             </button>
@@ -29,10 +29,10 @@
                     <li class="nav-item">
                         <a class="nav-link{{ if eq .active `/share` }} active{{ end }}" href="/share">分享</a>
                     </li>
-                {{- end -}}
                     <li class="nav-item">
                         <a class="nav-link{{ if eq .active `/rem` }} active{{ end }}" href="/rem">記憶</a>
                     </li>
+                {{- end -}}
                     <li class="nav-item">
                         <a class="nav-link{{ if eq .active `/indent` }} active{{ end }}" href="/indent">縮排</a>
                     </li>

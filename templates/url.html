@@ -27,15 +27,13 @@
 
             {{- if gt (len .linkDatas) 0 }}
                 <table class="table table-striped">
-                    <tbody>
-                        {{ range .linkDatas }}
-                        <tr>
-                            <td>{{ .ID }}</td>
-                            <td>{{ .Type }}</td>
-                            <td><a href="{{ .Link }}" download="{{ .ID }}.mp4" target="_blank">網址</a></td>
-                        </tr>
-                        {{ end }}
-                    </tbody>
+                    {{ range .linkDatas }}
+                    <tr>
+                        <td>{{ .ID }}</td>
+                        <td>{{ .Type }}</td>
+                        <td><a href="{{ .Link }}" download="{{ .ID }}.mp4" target="_blank">網址</a></td>
+                    </tr>
+                    {{ end }}
                 </table>
 
             <center>
