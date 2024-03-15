@@ -18,6 +18,7 @@ func UrlGet(c *gin.Context) {
     downloadLink := c.Query("downloadLink")
     downloadLink = strings.Replace(downloadLink, " ", "+", -1)
 
+    var uniqes []string
     var linkDatas []conf.LinkData
     for _, link := range strings.Split(downloadLink, "_") {
         if link != "" {
@@ -40,7 +41,15 @@ func UrlGet(c *gin.Context) {
             }
 
             linkData := conf.LinkData{id, typeStr, link}
-            linkDatas = append(linkDatas, linkData)
+
+            if script.NotInclude(uniqes, link) {
+
+                uniqes = append(uniqes, link)
+
+                linkDatas = append(linkDatas, linkData)
+
+            }
+
         }
     }
 

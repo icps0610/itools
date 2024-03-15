@@ -28,6 +28,10 @@ func IsFacebookVideo(url string) bool {
     return IsFacebook(url) && (Match(url, `\/watch\?v`) || Match(url, `\/reel\/`) || Match(url, `fb\.watch`) || Match(url, `videos`))
 }
 
+func IsFacebookServer(url string) bool {
+    return Match(url, `fbcdn`) || Match(url, `cdninstagram`)
+}
+
 func isJPG(link string) bool {
     return Match(link, `jpg`)
 }

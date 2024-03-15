@@ -44,3 +44,9 @@ func MatchAll(str, keyword string, is ...int) []string {
 
     return re.FindAllString(str, -1)
 }
+
+func ScanAllGroups(str, keyword string) [][]string {
+    re := regexp.MustCompile(keyword)
+
+    return re.FindAllStringSubmatch(str, -1)
+}

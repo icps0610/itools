@@ -25,31 +25,46 @@ func GetFBLink(doc soup.Root) []string {
         link := meta.Attrs()[`href`]
         link = DeURLCode(link)
 
-        if Match(link, `fbcdn`) {
-            if link != "" && notInclude(links, link) {
+        if IsFacebookServer(link) {
+            if link != "" && NotInclude(links, link) {
                 link = strings.Replace(link, `/video_redirect/?src=`, "", -1)
 
                 links = append(links, link)
                 break
             }
         }
+
     }
 
-    // 因為
-    // 檢查轉址 https://fb.watch/\w+/ => https://www.facebook.com/watch?v=\d+
-    // 所以作廢
+    // 因為 檢查轉址 https://fb.watch/\w+/ => https://www.facebook.com/watch?v=\d+ 所以作廢
+    // 又發現可以抓到 https://www.facebook.com/stories/\d+/\w+/
 
-    // for _, meta := range doc.FindAll("script") {
+    for idx, meta := range doc.FindAll("script") {
+        if idx > 58 {
+            text := meta.Text()
+            text = FixURL(text)
 
-    //     text := meta.Text()
-    //     text = FixURL(text)
-    //     link := Scan(text, `_sd_url":"(https:\/\/.*)","browse`, 1)
+            for _, textSplit := range strings.Split(text, `",`) {
+                for _, link := range ScanGroups(textSplit, `(https:\/\/.*mp4\?.*&oe=\w+)`) {
 
-    //     if link != "" {
-    //         links = append(links, link)
-    //         break
-    //     }
-    // }
+                    if NotInclude(links, link) {
+                        links = append(links, link)
+                    }
+                }
+
+                // for _, link := range ScanGroups(textSplit, `(https:\/\/.*jpg\?.*&oe=\w+)`) {
+
+                //     if NotInclude(links, link) {
+
+                //         links = append(links, link)
+
+                //     }
+                // }
+            }
+
+        }
+
+    }
 
     return links
 }

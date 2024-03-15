@@ -30,16 +30,32 @@ func GetTitle(url string) (string, string) {
             div := divs[0]
             channel = getFindText(div, `a`, 0)
             title = getFindText(div, `p`, 0)
+
         }
 
         // https://www.facebook.com/\w+/videos/\d+
-        divs = doc.FindAll("div", "id", "m_story_permalink_view")
-        if len(divs) > 0 {
-            div := divs[0]
-            channel = div.Find("strong").FullText()
 
-            title = getFindText(div, `p`, 0)
+        if title == "" {
+            divs = doc.FindAll("div", "id", "m_story_permalink_view")
+            if len(divs) > 0 {
+                div := divs[0]
+                sg := div.FindAll("strong")
+                if len(sg) > 0 {
+                    channel = sg[0].FullText()
+                }
+
+                title = getFindText(div, `p`, 0)
+
+            }
         }
+
+        if title == "" {
+            divs := doc.FindAll("title")
+            if len(divs) > 0 {
+                title = divs[0].Text()
+            }
+        }
+
         return tileAndChannel(title, channel), docText
     }
 
@@ -129,7 +145,10 @@ func getFindText(doc soup.Root, ele string, idx int) string {
 }
 
 func tileAndChannel(title, channel string) string {
-    return fmt.Sprintf(`%s [ %s ]`, title, channel)
+    if channel != "" {
+        channel = fmt.Sprintf(`[ %s ]`, channel)
+    }
+    return fmt.Sprintf(`%s %s`, title, channel)
 }
 
 var _ = fmt.Println

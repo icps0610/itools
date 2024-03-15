@@ -1,0 +1,56 @@
+{{- template "top" . }}
+
+            <h3>請輸入兩個數字用逗號分隔,範例 58,50</h3>
+
+            <div class="input-group mb-3">
+                <input type="text" id="x" class="form-control" placeholder="x ..." autocomplete="off" value="38">
+                <input type="text" id="y" class="form-control" placeholder="y ..." autocomplete="off" value="25">
+                <input type="text" id="input" class="form-control" placeholder="輸入 ..." autocomplete="off" value="58,50">
+  
+                <div class="input-group-append">
+                    <button onclick="readFromClipboard()" class="input-group-text">從剪貼板讀取</button>
+                </div>
+            </div>
+
+            <center>
+                <textarea id="copyText" rows="3" class="form-control">
+
+                </textarea>
+            </center>
+            <div style="text-align: right;">
+                <button onclick="copyText()" class="form-control">複製</button>
+            </div>
+
+{{- template "bottom" . }}
+
+<script>
+
+function readFromClipboard() {
+    navigator.clipboard.readText()
+        .then(text => {
+            document.getElementById("input").value = text;
+
+            var input = document.getElementById("input").value;
+            var x = parseInt(document.getElementById("x").value);
+            var y = parseInt(document.getElementById("y").value);
+
+            // 檢查是否有輸入數字
+            if (input.trim() === "" || isNaN(x) || isNaN(y)) {
+                document.getElementById("copyText").innerText = "請輸入有效數字和 x, y 值";
+                return;
+            }
+
+            var numbers = input.split(",");
+            var resultX = parseInt(numbers[0].trim()) - x;
+            var resultY = parseInt(numbers[1].trim()) - y;
+
+            document.getElementById("copyText").innerText = "x + " + resultX + ", y + " + resultY;
+            
+        })
+        .catch(err => {
+            console.error('Failed to read clipboard contents: ', err);
+        });
+}
+</script>
+
+{{- template "scriptCopyText" . }}

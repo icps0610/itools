@@ -11,7 +11,7 @@ import (
     "iTools/crawler"
     "iTools/linkedin"
     "iTools/script"
-    "iTools/simpToTrad"
+    // "iTools/simpToTrad"
     "iTools/urlProcess"
 )
 
@@ -32,7 +32,7 @@ func UrlPost(c *gin.Context) {
         // 開始爬
         var title string
         title, docText = urlProcess.GetTitle(url)
-        title = simpToTrad.Run(title)
+        // title = simpToTrad.Run(title)
 
         msg := script.EnBase64(title + "\n" + url)
         returnUrl += fmt.Sprintf(`url=%s`, msg)

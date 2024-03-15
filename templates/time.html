@@ -1,0 +1,26 @@
+{{- template "top" . }}
+            <h3>時間</h3>
+
+            <h5>時間格式</h5>
+            <h5 style="color: gray; font-size: 12px;" class="mb-1">日期轉換　2000-01-01 08:00:00</h5>
+            <h5 style="color: gray; font-size: 12px;" class="mb-1">日期計算　1970-01-01+5day</h5>
+            <h5 style="color: gray; font-size: 12px;" class="mb-1">　　　　　1995-01-01--1970-01-01</h5>
+            <h5 style="color: gray; font-size: 12px;" class="mb-1">　　　　　today-5day</h5>
+            <h5 style="color: gray; font-size: 12px;" class="mb-3">　　　　　today--1995-01-01</h5>
+
+            <form action="/utime" method="post" enctype="multipart/form-data">
+                <textarea id="textarea" name="text" rows="3" class="form-control">{{ .timeFormat }}</textarea>
+                <div style="text-align: right;">
+                    <input type="submit" value="傳送" class="form-control mb-3">
+                </div>
+            </form>
+            
+            <h5>UnixTime 或 天數</h5>
+            <form action="/timeFormat" method="post" enctype="multipart/form-data">
+                <textarea id="textarea" name="text" rows="3" class="form-control">{{ .utime }}</textarea>
+                <div style="text-align: right;">
+                    <input type="submit" value="傳送" class="form-control">
+                </div>
+            </form>
+
+{{- template "bottom" . }}

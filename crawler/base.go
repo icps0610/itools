@@ -21,8 +21,13 @@ func getHttpRequest(url string) *http.Request {
         req.Header.Set(`User-Agent`, userAgent)
     }
 
+    var cookie = `over18=1;`
+    if script.IsFacebook(url) || script.IsInstagram(url) {
+        cookie += conf.Cookie
+    }
+
     // fb instagram
-    req.Header.Set("Cookie", conf.Cookie+`over18=1`)
+    req.Header.Set("Cookie", conf.Cookie)
 
     return req
 }

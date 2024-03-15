@@ -15,7 +15,7 @@
 <body>
     <nav class="navbar navbar-dark bg-dark navbar-expand-sm">
         <div class="container-sm">
-            <a class="navbar-brand" href="http://192.168.0.205/">iTools</a>
+            <a class="navbar-brand" href="http://192.168.0.205">iTools</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
             </button>
@@ -33,16 +33,25 @@
                         <a class="nav-link{{ if eq .active `/rem` }} active{{ end }}" href="/rem">記憶</a>
                     </li>
                 {{- end -}}
-                    <li class="nav-item">
-                        <a class="nav-link{{ if eq .active `/indent` }} active{{ end }}" href="/indent">縮排</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link {{ if or (eq .active `/time`) (eq .active `/location`) (eq .active `/carry`) }}active{{ end }} dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            轉換
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="/time">時間</a></li>
+                            <li><a class="dropdown-item" href="/location">位置</a></li>
+                            <li><a class="dropdown-item" href="/carry">進位</a></li>
+                        </ul>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link{{ if eq .active `/carry` }} active{{ end }}" href="/carry">進位</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link {{ if or (eq .active `/indent`) (eq .active `/passwd`) }}active{{ end }} dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            文字
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="/indent">縮排</a></li>
+                            <li><a class="dropdown-item" href="/passwd">密碼</a></li>
+                        </ul>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link{{ if eq .active `/passwd` }} active{{ end }}" href="/passwd">密碼</a>
-                    </li>
-
                     <li class="nav-item dropdown">
                         <a class="nav-link {{ if or (eq .active `/base64`) (eq .active `/urlCode`) }}active{{ end }} dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             編碼

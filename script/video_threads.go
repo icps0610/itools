@@ -38,7 +38,7 @@ func GetThreadsLink(texts string) []string {
             keyWord := `url":"(https:\/\/scontent.cdninstagram.com.*10d13b)`
             link := Scan(text, keyWord, 1)
 
-            if link != "" && notInclude(links, link) {
+            if link != "" && NotInclude(links, link) {
 
                 links = append(links, link)
             }
@@ -57,7 +57,7 @@ func splitKeyWordText(texts, keyWord string, idxK int) string {
     return ""
 }
 
-func notInclude(arr []string, e1 string) bool {
+func NotInclude(arr []string, e1 string) bool {
     for _, e := range arr {
         if e == e1 {
             return false
