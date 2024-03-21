@@ -19,7 +19,6 @@ function readFromClipboard() {
             document.getElementById("textarea").value = text;
             document.getElementById("copyText").value = strippedValue;
 
-
         })
         .catch(err => {
             console.error('Failed to read clipboard contents: ', err);
@@ -30,3 +29,4 @@ function readFromClipboard() {
 {{- template "scriptCopyText" . }}
 
 {{- template "bottom" . }}
+

@@ -13,7 +13,7 @@ import (
 func UtimePost(c *gin.Context) {
     timeFormatText := c.PostForm("text")
 
-    var returnUrl string
+    var returnUrl = `/time?`
 
     // 替算今天日期
     today := script.GetToday()
@@ -32,7 +32,7 @@ func UtimePost(c *gin.Context) {
         timeTime := script.GetTime(year, month, day, 0, 0, 0).AddDate(0, 0, addDay)
         timeStamp := script.GetDate(timeTime)
 
-        returnUrl = fmt.Sprintf(`/time?timeformat=%s`, timeStamp)
+        returnUrl += fmt.Sprintf(`timeformat=%s`, timeStamp)
     }
 
     //  計算天數差
@@ -44,7 +44,7 @@ func UtimePost(c *gin.Context) {
 
         dayDiff := script.DayDiff(year1, month1, day1, year2, month2, day2)
 
-        returnUrl = fmt.Sprintf(`/time?utime=%v`, dayDiff)
+        returnUrl += fmt.Sprintf(`utime=%v`, dayDiff)
     }
 
     // 2000-01-01 08:00:00
@@ -56,7 +56,7 @@ func UtimePost(c *gin.Context) {
         timeTime := script.GetTime(year, month, day, hour, min, sec)
         utime := script.GetUtime(timeTime)
 
-        returnUrl = fmt.Sprintf(`/time?utime=%v`, utime)
+        returnUrl += fmt.Sprintf(`utime=%v`, utime)
         c.Redirect(http.StatusMovedPermanently, returnUrl)
     }
 
@@ -68,7 +68,7 @@ func UtimePost(c *gin.Context) {
         timeTime := script.GetTime(year, month, day, 0, 0, 0)
         utime := script.GetUtime(timeTime)
 
-        returnUrl = fmt.Sprintf(`/time?utime=%v`, utime)
+        returnUrl += fmt.Sprintf(`utime=%v`, utime)
     }
 
     c.Redirect(http.StatusMovedPermanently, returnUrl)

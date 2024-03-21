@@ -32,6 +32,9 @@ func main() {
     router.POST("/utime", UtimePost)
     router.POST("/timeFormat", TimeFormatPost)
 
+    router.GET("/cookie", CookieGet)
+    router.POST("/cookie", CookiePost)
+
     if conf.Mode == `pi` || conf.Mode == `debug` {
         router.GET("/share", ShareGet)
         router.GET("/share/:base64FileName", ShareDownload)
