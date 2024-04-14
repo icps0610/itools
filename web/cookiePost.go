@@ -13,16 +13,21 @@ import (
 func CookiePost(c *gin.Context) {
     cookie := c.PostForm("text")
 
+    var resultLine string
     var result string
     for _, line := range strings.Split(cookie, "\r\n") {
         split := strings.Fields(line)
         if len(split) > 1 {
             result += fmt.Sprintf(`document.cookie = "%s=%s"`, split[0], split[1])
             result += "\r\n"
+
+            resultLine += fmt.Sprintf(`%s=%s;`, split[0], split[1])
         }
     }
     if result != "" {
-        result += "\r\nlocation.reload();"
+        result += "location.reload();\r\n\r\n\r\n"
+
+        result += resultLine
     }
 
     result = script.EnBase64(result)

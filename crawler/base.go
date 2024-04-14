@@ -17,17 +17,27 @@ func getHttpRequest(url string) *http.Request {
 
     req.Header.Set("Accept", `text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7`)
 
+    // req.Header.Set("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36")
+
     if script.Match(url, `ithome`) {
         req.Header.Set(`User-Agent`, userAgent)
     }
 
     var cookie = `over18=1;`
+
+    // fb instagram
+
     if script.IsFacebook(url) || script.IsInstagram(url) {
         cookie += conf.Cookie
     }
 
-    // fb instagram
-    req.Header.Set("Cookie", conf.Cookie)
+    // if script.IsWebSite(url, `twitter`) {
+    //     cookie += `auth_token=5e465e71bccc07061ab6e9fa19b61a572b8f9260;`
+    // }
+
+    // fmt.Println(cookie)
+
+    req.Header.Set("Cookie", cookie)
 
     return req
 }

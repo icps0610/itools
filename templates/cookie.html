@@ -9,7 +9,7 @@
             </form>
             
         {{- if .cookie -}}
-            <textarea id="copyText" name="text" rows="5" class="form-control">{{ .cookie }}</textarea>
+            <textarea id="copyText" name="text" rows="15" class="form-control">{{ .cookie }}</textarea>
             <div style="text-align: right;">
                 <button onclick="copyText()" class="form-control">複製</button>
             </div>
